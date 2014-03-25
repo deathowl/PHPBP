@@ -74,8 +74,7 @@
 								<div style="text-align: left;">
 									<span>Errorok kezelése</span>
 								</div>
-								<pre><code data-trim="">set_error_handler(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
-								</code></pre>
+								<pre><code data-trim="">set_error_handler(array(class, 'functionname'));</code></pre>
 											</div>
 											<div class="fragment" data-fragment-index="1">
 												<span>
@@ -83,8 +82,7 @@
 														<span>Kezeletlen kivételek kezelése</span>
 													</div>
 												</span>
-												<pre><code data-trim="">set_exception_handler(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
-							    </code></pre>
+												<pre><code data-trim="">set_exception_handler(array(class, 'functionname'));</code></pre>
 											</div>
 											<div class="fragment" data-fragment-index="2">
 												<span>
@@ -92,8 +90,7 @@
 														<span>Fatal :(</span>
 													</div>
 												</span>
-												<pre><code data-trim="">register_shutdown_function(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
-							    </code>        </pre>
+												<pre><code data-trim="">register_shutdown_function(array(class, 'functionname')); </code></pre>
 											</div>
 									</div>
 				</section>
@@ -131,7 +128,6 @@
 					<div>
 						<img src="./resources/airb.png" alt="Airbrake">
 					</div>
-		
 					<div>Fizetős</div>
 					<div>Integrációk:</div>
 					<div>
@@ -141,8 +137,6 @@
 								<li>Bitbucket</li>
 								<li>Jira</li>
 								<li>HipChat</li>
-								<li>Asana</li>
-								<li>Campfire</li>
 								<li>Webhook</li>
 							</font>
 						</ul>
@@ -150,6 +144,7 @@
 				</section>
 				<section data-id="95e22eb0764ae958f674f422d4ba5d4d">
 					<h2>OK, de mennyibe is kerül?</h2>
+					<span> És szenzitív információkat kiadni harmadik félnek? Én nem tenném.</span>
 					<div>
 						<div style="text-align: left;">
 							<ul>
@@ -168,7 +163,6 @@
 								<ul>
 									<li>30 User</li>
 									<li>40 projekt</li>
-									<li>support</li>
 								</ul>
 							</ul>
 							&nbsp;
@@ -208,6 +202,7 @@
 							<li>Magadnak hostolhatod</li>
 							<li>Hostolható Herokun ingyen&nbsp;<span>&nbsp;</span>
 							</li>
+							<li><a href="http://errbit.us"> Hosted Errbit coming soon :)</a></li>
 						</ul>
 					</div>
 				</section>
