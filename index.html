@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Errbit!</title>
+
+		<meta name="description" content="Errbit">
+		<meta name="author" content="Deathowl">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-id="3cefe00e1068aca09638580967625cfe">
+					<h1>
+						<span>Errbit</span>
+					</h1>
+					<h2>
+						<span style="font-size: 55.8px;">Language agnostic error management</span>
+						<br>
+					</h2>
+					<p>
+						<small>
+						<a href="http://deathowlsnest.com">Csergő Bálint</a> / <a href="http://twitter.com/abagoly">@abagoly</a>
+						</small>
+						<br>
+						<small>Infrastructure Engineer @ <a href="http://ustream.tv">Ustream</a>
+						</small>
+					</p>
+				</section>
+				<section data-id="3b8f4c449605c627cc791436030ae59b">
+					<h1>Mikről lesz ma szó?</h1>
+					<li class="fragment" data-fragment-index="0">
+						<em>PHP Errorhandling alapok</em>
+					</li>
+					<li class="fragment" data-fragment-index="1">
+						<i>Airbrake.io</i>
+					</li>
+					<li class="fragment" data-fragment-index="2">Errbit</li>
+					<li class="fragment" data-fragment-index="3">Errbit Proxy</li>
+					<li class="fragment" data-fragment-index="3">ErrbitPHP</li>
+				</section>
+				<section data-id="5f62819de1c01c4f31c8c94f87d5d2cc">
+					<h2>
+					Ez szerintem senkinek sem új
+					</h2>
+					<div>
+							<div class="fragment" data-fragment-index="0">
+								<div style="text-align: left;">
+									<span>Errorok kezelése</span>
+								</div>
+								<pre><code data-trim="">set_error_handler(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
+								</code></pre>
+											</div>
+											<div class="fragment" data-fragment-index="1">
+												<span>
+													<div style="text-align: left;">
+														<span>Kezeletlen kivételek kezelése</span>
+													</div>
+												</span>
+												<pre><code data-trim="">set_exception_handler(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
+							    </code></pre>
+											</div>
+											<div class="fragment" data-fragment-index="2">
+												<span>
+													<div style="text-align: left;">
+														<span>Fatal :(</span>
+													</div>
+												</span>
+												<pre><code data-trim="">register_shutdown_function(</code><code data-trim="">    array(class, 'functionname'));</code><code data-trim="">);<br>
+							    </code>        </pre>
+											</div>
+									</div>
+				</section>
+				<section data-id="f85d96e48379ae29e6749e1d974d1497" data-background-color="rgba( 200, 50, 30, 0.6 )">
+					<h2>EXception Handling</h2>
+					<div>Ne igy:</div>
+					<div>
+						<pre style="font-size: 14px; padding: 5px; overflow: auto; width: 808.71875px; max-height: 450px; margin-top: 0px; margin-bottom: 0px; border: 2px dotted silver; color: rgb(51, 51, 51); font-style: normal; font-variant: normal; background-color: rgb(255, 255, 255);">try {
+			}
+			catch (Exception ex) {
+			   // Gotcha!
+			}</pre>
+					</div>
+					<img class="fragment" src="./resources/poke.jpg" alt="Catch em all">
+				</section>
+				<section data-id="90c592568f843f2400ebd237a3ee0f51" data-background-color="rgba( 200, 50, 30, 0.6 )">
+					<h2>Errror tracking, Így is lehet</h2>
+					<div>
+						<ul>
+							<li>Olvasgathatunk apache logokat</li>
+							<li>PHP Error Logokat</li>
+							<li>Alkalmazás logokat</li>
+							<li>
+								<font style="font-size: 54px;">HIBALEVELEKET!</font>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section data-background-color="rgba( 200, 50, 30, 0.6 )">
+					<h2>A Hibalevél nálunk szitokszó, megmutatom miért</h2>
+					<img src="./resources/sync.png" alt="Airbrake">
+				</section>
+				<section data-id="333207848b73c91a1077ac956ba86a20">
+					<h2>Airbrake.io</h2>
+					<div>
+						<img src="./resources/airb.png" alt="Airbrake">
+					</div>
+		
+					<div>Fizetős</div>
+					<div>Integrációk:</div>
+					<div>
+						<ul>
+							<font style="font-size: 32px;">
+								<li>Github</li>
+								<li>Bitbucket</li>
+								<li>Jira</li>
+								<li>HipChat</li>
+								<li>Asana</li>
+								<li>Campfire</li>
+								<li>Webhook</li>
+							</font>
+						</ul>
+					</div>
+				</section>
+				<section data-id="95e22eb0764ae958f674f422d4ba5d4d">
+					<h2>OK, de mennyibe is kerül?</h2>
+					<div>
+						<div style="text-align: left;">
+							<ul>
+								<li>Small $39/Month</li>
+								<ul>
+									<li>5 User&nbsp;</li>
+									<li>10 Projekt</li>
+								</ul>
+								<li>Medium $89/Month</li>
+								<ul>
+									<li>20 user</li>
+									<li>15 projekt,</li>
+									<li>support</li>
+								</ul>
+								<li>Enterprise $199/Month</li>
+								<ul>
+									<li>30 User</li>
+									<li>40 projekt</li>
+									<li>support</li>
+								</ul>
+							</ul>
+							&nbsp;
+							<div style="text-align: center; " class="fragment" data-fragment-index="0">
+								<font color="#ff0000" style="font-size: 72px;">MEH</font>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section data-id="f308cb3b3fef670e4f28b8dc82362c0c" data-background-color="rgba( 50, 200, 90, 0.4 )">
+					<h2>Inkább így</h2>
+					<div>
+						<font style="font-size: 54px;">Errbit</font>
+					</div>
+					<p>Az Errbit egy nyílt forrású nyelv független alkalmazás a hibák szofisztikált naplózására és kezelésére.</p>
+					<p>Beüzemelni nem fájdalmas, és a legtöbb nyelvhez létezik hozzá library.</p>
+					<p>Ha nincs még Lib a nyelvhez amit használsz, akkor van 1 HTTP-s API amin keresztül el tudod küldeni a hibákat Errbitbe.</p>
+					<p>Mindent tud, amit az Airbrake.io :)</p>
+					<p class="fragment" data-fragment-index="0">
+						<font style="font-size: 90px;">FUCK YEAH!</font>
+					</p>
+					<p>
+						<br>
+					</p>
+				</section>
+				<section data-id="c6f405413f552a4ded268f01fa933c36">
+					<h2>ERRBIT VS AIRBRAKE</h2>
+					<div>
+						<ul>
+							<li>Megegyező API</li>
+							<li>Minden Airbrake.io kliens Errbit kliens is, ha jól fogod</li>
+							<li>Mindennel integrálódik, amivel az Airbrake</li>
+							<li>Open Source <font color="#ff0000">&lt;3</font>
+							</li>
+							<li>Unlimited user és projekt</li>
+							<li>Okosabb kereső</li>
+							<li>Magadnak hostolhatod</li>
+							<li>Hostolható Herokun ingyen&nbsp;<span>&nbsp;</span>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section data-id="c41ccbe0002b3b285e0f128d6640cef4">
+					<h2 class="absolute-element">
+						<font style="font-size: 72px;">HTTP, tehát az phpban Blocking?
+						</font>
+					</h2>
+					<h3 class="absolute-element" style="position: absolute; width: 238px; height: 49px; z-index: 4; left: 323px; top: 350px;">Igen , és nem.</h3>
+					<div>
+						<br>
+					</div>
+				</section>
+				<section data-id="82d46dc53f2f277fd9d5ec7b0c47a4f8">
+					<h2 style="text-align: center;">
+						<span style="font-style: normal; font-variant: normal; text-transform: none;">
+						<font style="font-size: 72px;">Errbit Proxy</font>
+						</span>
+					</h2>
+					<div>
+						<span style="font-size: 72.41215515136719px;">Supported Libs: errbitPHP</span>
+					</div>
+					<div>
+						<span style="font-size: 72.41215515136719px;">Maintainer: Ustream</span>
+					</div>
+					<div>
+						<span style="font-size: 72.41215515136719px;">Nyelv: Nodejs</span>
+					</div>
+					<div>
+						<span style="font-size: 72.41215515136719px;">Mit tud?</span>
+					</div>
+					<div>
+						<ul>
+							<li class="fragment" data-fragment-index="0">
+								<font style="font-size: 24px;">Blocking =&gt; Nonblocking</font>
+							</li>
+							<li class="fragment" data-fragment-index="1">
+								<font style="font-size: 24px;">Udp&nbsp;</font>
+							</li>
+							<li class="fragment" data-fragment-index="2">
+								<font style="font-size: 24px;">Rate limiting</font>
+							</li>
+							<li class="fragment" data-fragment-index="3">Statsd jelentés</li>
+						</ul>
+					</div>
+				</section>
+				<section data-id="a24d5a9b701d9317d381ed3fb5a6befc">
+					<h2>Ez mégiscsak a PHP Meetup :)</h2>
+					<div>Errbit PHP</div>
+					<div>(<a href="https://github.com/emgiezet/errbitPHP">https://github.com/emgiezet/errbitPHP</a>)</div>
+					<div>Könnyű használni</div>
+					<div class="fragment" data-fragment-index="0">
+						<pre><code>use Errbit\Errbit;
+Errbit::instance()-&gt;configure(array(
+    'api_key'    =&gt;'5a4e4517cee957b2ecc07cf264cdbb29',
+    'host'       =&gt; '33.33.33.33',
+    'port'       =&gt; '8080'
+    ))-&gt;start();</code></pre>
+					</div>
+				</section>
+				<section>
+					<img src="./resources/git.png" alt="GitHub">
+				</section>
+				<section data-id="6d5867f4f962db0881880d29a13883a0">
+					<h2 class="absolute-element">Akkor lássuk ezt gyorsan élőben</h2>
+				</section>
+				<section data-id="e390dbf937753b89da8ca96877bdc5fa">
+					<h2 class="absolute-element">Kérdezzetek, jó?</h2>
+				</section>
+				<section data-id="e7d3d8582242d540f3a1af0b2a373419">
+					<h2 class="absolute-element">THX</h2>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: false,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'concave', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
